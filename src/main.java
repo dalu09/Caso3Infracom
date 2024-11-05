@@ -3,6 +3,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Paths;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -18,7 +19,8 @@ public class main {
     static ArrayList<String> listaUsuarios = new ArrayList<>();
 
     public static void main(String[] args) throws Exception {
-        FileReader lectorArchivo = new FileReader("D:\\Biblioteca\\Escritorio\\nuevodef\\Caso3Infracom\\infopaquetes.txt");
+        String rutaRelativa = Paths.get(System.getProperty("user.dir"), "infopaquetes.txt").toString();
+        FileReader lectorArchivo = new FileReader(rutaRelativa);
         BufferedReader lectorPaquetes = new BufferedReader(lectorArchivo);
         String lineaInfo = lectorPaquetes.readLine();
         while (lineaInfo != null) {
@@ -103,14 +105,14 @@ public class main {
         String clavePrivadaTexto = Base64.getEncoder().encodeToString(clavePrivada.getEncoded());
         String clavePublicaTexto = Base64.getEncoder().encodeToString(clavePublica.getEncoded());
         try {
-            FileWriter archivoPrivado = new FileWriter("D:\\Biblioteca\\Escritorio\\nuevodef\\Caso3Infracom\\llaves\\llave_priv.txt");
+            FileWriter archivoPrivado = new FileWriter("../llaves/llave_priv.txt");
             archivoPrivado.write(clavePrivadaTexto);
             archivoPrivado.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
         try {
-            FileWriter archivoPublico = new FileWriter("D:\\Biblioteca\\Escritorio\\nuevodef\\Caso3Infracom\\llaves\\llave_pub.txt");
+            FileWriter archivoPublico = new FileWriter("../llaves/llave_pub.txt");
             archivoPublico.write(clavePublicaTexto);
             archivoPublico.close();
         } catch (IOException e) {

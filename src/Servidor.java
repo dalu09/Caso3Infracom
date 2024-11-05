@@ -7,6 +7,7 @@ import java.math.BigInteger;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
@@ -222,7 +223,8 @@ class ManejadorCliente extends Thread {
     }
 
     public static PublicKey obtenerClavePublica() throws FileNotFoundException {
-        FileReader lectorArchivo = new FileReader("D:\\Biblioteca\\Escritorio\\nuevodef\\Caso3Infracom\\llaves/llave_pub.txt");
+        String rutaRelativa = Paths.get(System.getProperty("user.dir"), "llaves/llave_pub.txt").toString();
+        FileReader lectorArchivo = new FileReader(rutaRelativa);
         BufferedReader lectorBuffer = new BufferedReader(lectorArchivo);
         PublicKey clavePublica = null;
         try {
@@ -239,7 +241,8 @@ class ManejadorCliente extends Thread {
     }
 
     public static PrivateKey obtenerClavePrivada() throws FileNotFoundException {
-        FileReader lectorArchivo = new FileReader("D:\\Biblioteca\\Escritorio\\nuevodef\\Caso3Infracom\\llaves/llave_priv.txt");
+        String rutaRelativa = Paths.get(System.getProperty("user.dir"), "llaves/llave_priv.txt").toString();
+        FileReader lectorArchivo = new FileReader(rutaRelativa);
         BufferedReader lectorBuffer = new BufferedReader(lectorArchivo);
         PrivateKey clavePrivada = null;
         try {
