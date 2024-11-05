@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 
-public class Principal {
+public class main {
     static boolean enEjecucion = true;
     static HashMap<String, String> tablaPaquetes = new HashMap<>();
     static ArrayList<String> listaUsuarios = new ArrayList<>();
