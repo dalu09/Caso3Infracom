@@ -226,7 +226,7 @@ class ManejadorClienteAsimet extends Thread {
     }
 
     public static PublicKey obtenerClavePublica() throws FileNotFoundException {
-        FileReader lectorArchivo = new FileReader("D:\\Biblioteca\\Escritorio\\nuevodef\\Caso3Infracom\\llaves/llave_pub.txt");
+        FileReader lectorArchivo = new FileReader("C:\\Users\\dluci\\OneDrive\\Documentos\\GitHub\\Caso3Infracom\\llaves/llave_pub.txt");
         BufferedReader lectorBuffer = new BufferedReader(lectorArchivo);
         PublicKey clavePublica = null;
         try {
@@ -243,7 +243,7 @@ class ManejadorClienteAsimet extends Thread {
     }
 
     public static PrivateKey obtenerClavePrivada() throws FileNotFoundException {
-        FileReader lectorArchivo = new FileReader("D:\\Biblioteca\\Escritorio\\nuevodef\\Caso3Infracom\\llaves/llave_priv.txt");
+        FileReader lectorArchivo = new FileReader("C:\\Users\\dluci\\OneDrive\\Documentos\\GitHub\\Caso3Infracom\\llaves/llave_priv.txt");
         BufferedReader lectorBuffer = new BufferedReader(lectorArchivo);
         PrivateKey clavePrivada = null;
         try {
@@ -289,4 +289,3 @@ class ManejadorClienteAsimet extends Thread {
         this.numeroG = new BigInteger(valorG);
     }
 }
-

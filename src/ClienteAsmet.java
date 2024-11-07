@@ -161,7 +161,7 @@ public class ClienteAsmet extends Thread {
     }
 
     public static PublicKey obtenerClavePublica() throws FileNotFoundException {
-        FileReader lectorArchivo = new FileReader("D:\\Biblioteca\\Escritorio\\nuevodef\\Caso3Infracom\\llaves\\llave_pub.txt");
+        FileReader lectorArchivo = new FileReader("C:\\Users\\dluci\\OneDrive\\Documentos\\GitHub\\Caso3Infracom\\llaves\\llave_pub.txt");
         BufferedReader lectorBuffer = new BufferedReader(lectorArchivo);
         PublicKey clavePublica = null;
         try {

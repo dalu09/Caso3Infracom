@@ -7,7 +7,6 @@ import java.math.BigInteger;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
@@ -114,16 +113,18 @@ class ManejadorCliente extends Thread {
                 System.exit(-1);
             }
             
-            Tiempo tiempoGeneracionDiffie = new Tiempo();
+            
             generarValoresPG();
 
             escritorSocket.println(numeroG.toString());
             escritorSocket.println(numeroP.toString());
             SecureRandom generadorSeguro = new SecureRandom();
+
+            Tiempo tiempoGeneracionGx = new Tiempo();
             BigInteger valorX = new BigInteger(numeroP.bitLength() - 1, generadorSeguro);
             BigInteger valorGx = numeroG.modPow(valorX, numeroP);
             escritorSocket.println(valorGx.toString());
-            System.out.println("Tiempo que tomó generar G, P y G^x es de " + tiempoGeneracionDiffie.getTiempo() + " ms");
+            System.out.println("Tiempo que tomó generar G^x es de " + tiempoGeneracionGx.getTiempo() + " ms");
 
             Signature verificadorFirma = Signature.getInstance("SHA1withRSA");
             verificadorFirma.initSign(clavePrivada);
@@ -223,8 +224,7 @@ class ManejadorCliente extends Thread {
     }
 
     public static PublicKey obtenerClavePublica() throws FileNotFoundException {
-        String rutaRelativa = Paths.get(System.getProperty("user.dir"), "llaves/llave_pub.txt").toString();
-        FileReader lectorArchivo = new FileReader(rutaRelativa);
+        FileReader lectorArchivo = new FileReader("C:\\Users\\dluci\\OneDrive\\Documentos\\GitHub\\Caso3Infracom\\llaves/llave_pub.txt");
         BufferedReader lectorBuffer = new BufferedReader(lectorArchivo);
         PublicKey clavePublica = null;
         try {
@@ -241,8 +241,7 @@ class ManejadorCliente extends Thread {
     }
 
     public static PrivateKey obtenerClavePrivada() throws FileNotFoundException {
-        String rutaRelativa = Paths.get(System.getProperty("user.dir"), "llaves/llave_priv.txt").toString();
-        FileReader lectorArchivo = new FileReader(rutaRelativa);
+        FileReader lectorArchivo = new FileReader("C:\\Users\\dluci\\OneDrive\\Documentos\\GitHub\\Caso3Infracom\\llaves/llave_priv.txt");
         BufferedReader lectorBuffer = new BufferedReader(lectorArchivo);
         PrivateKey clavePrivada = null;
         try {
@@ -273,18 +272,25 @@ class ManejadorCliente extends Thread {
         lectorError.close();
         proceso.waitFor();
         String salidaTexto = salidaProceso.toString();
+        
+        Tiempo tiempoGeneracionP = new Tiempo();
+        
         Pattern patronPrime = Pattern.compile("prime:\\s+([\\s\\S]+?)generator:");
-        Pattern patronGenerador = Pattern.compile("generator:\\s+(\\d+)");
         Matcher matcherPrime = patronPrime.matcher(salidaTexto);
         if (matcherPrime.find()) {
             this.valorP = matcherPrime.group(1).replaceAll("\\s+", "");
         }
+        String valorPHex = this.valorP.replace(":", "").replaceAll("\\s", "");
+        this.numeroP = new BigInteger(valorPHex, 16);
+        System.out.println("Tiempo que tomó generar P es de " + tiempoGeneracionP.getTiempo() + " ms");
+
+        Tiempo tiempoGeneracionG = new Tiempo();
+        Pattern patronGenerador = Pattern.compile("generator:\\s+(\\d+)");
         Matcher matcherGenerador = patronGenerador.matcher(salidaTexto);
         if (matcherGenerador.find()) {
             this.valorG = matcherGenerador.group(1);
         }
-        String valorPHex = this.valorP.replace(":", "").replaceAll("\\s", "");
-        this.numeroP = new BigInteger(valorPHex, 16);
         this.numeroG = new BigInteger(valorG);
+        System.out.println("Tiempo que tomó generar G es de " + tiempoGeneracionG.getTiempo() + " ms");
     }
 }

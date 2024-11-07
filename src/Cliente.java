@@ -5,7 +5,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.net.Socket;
-import java.nio.file.Paths;
 import java.security.KeyFactory;
 import java.security.MessageDigest;
 import java.security.PublicKey;
@@ -163,8 +162,7 @@ public class Cliente extends Thread {
     }
 
     public static PublicKey obtenerClavePublica() throws FileNotFoundException {
-        String rutaRelativa = Paths.get(System.getProperty("user.dir"), "/llaves/llave_pub.txt").toString();
-        FileReader lectorArchivo = new FileReader(rutaRelativa);
+        FileReader lectorArchivo = new FileReader("C:\\Users\\dluci\\OneDrive\\Documentos\\GitHub\\Caso3Infracom\\llaves/llave_pub.txt");
         BufferedReader lectorBuffer = new BufferedReader(lectorArchivo);
         PublicKey clavePublica = null;
         try {

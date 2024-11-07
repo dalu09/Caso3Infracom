@@ -3,7 +3,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.file.Paths;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -19,8 +18,7 @@ public class main {
     static ArrayList<String> listaUsuarios = new ArrayList<>();
 
     public static void main(String[] args) throws Exception {
-        String rutaRelativa = Paths.get(System.getProperty("user.dir"), "infopaquetes.txt").toString();
-        FileReader lectorArchivo = new FileReader(rutaRelativa);
+        FileReader lectorArchivo = new FileReader("C:\\Users\\dluci\\OneDrive\\Documentos\\GitHub\\Caso3Infracom\\infopaquetes.txt");
         BufferedReader lectorPaquetes = new BufferedReader(lectorArchivo);
         String lineaInfo = lectorPaquetes.readLine();
         while (lineaInfo != null) {
@@ -33,11 +31,11 @@ public class main {
         lectorPaquetes.close();
         BufferedReader lectorConsola = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Escriba la ruta completa de la ubicación de openssl:");
-        String rutaOpenSSL = "d:\\Biblioteca\\Escritorio\\OpenSSL-1.1.1h_win32\\OpenSSL-1.1.1h_win32";
+        String rutaOpenSSL = "C:\\Users\\dluci\\OneDrive\\Documentos\\GitHub\\Caso3Infracom\\Lib\\OpenSSL";
         while (enEjecucion) {
             System.out.println("--------------Bienvenido al menú principal del caso 3----------------");
             System.out.println("Selecciona una de las siguientes opciones:");
-            System.out.println("1. Opción 1.");
+            System.out.println("1. Opción 1. Generar las llaves.");
             System.out.println("2. Opción 2 simétrico.");
             System.out.println("3. Opción 2 asimétrico.");
             System.out.println("4. Salir");
@@ -97,26 +95,38 @@ public class main {
     }
 
     public static void generarLlavesASM() throws NoSuchAlgorithmException {
+        
         KeyPairGenerator generadorLlaves = KeyPairGenerator.getInstance("RSA");
         generadorLlaves.initialize(1024);
         KeyPair parLlaves = generadorLlaves.generateKeyPair();
+        
+         
+    
+        Tiempo tiempoClavePrivada = new Tiempo();
         PrivateKey clavePrivada = parLlaves.getPrivate();
-        PublicKey clavePublica = parLlaves.getPublic();
         String clavePrivadaTexto = Base64.getEncoder().encodeToString(clavePrivada.getEncoded());
-        String clavePublicaTexto = Base64.getEncoder().encodeToString(clavePublica.getEncoded());
         try {
-            FileWriter archivoPrivado = new FileWriter("../llaves/llave_priv.txt");
+            FileWriter archivoPrivado = new FileWriter("C:\\Users\\dluci\\OneDrive\\Documentos\\GitHub\\Caso3Infracom\\llaves\\llave_priv.txt");
             archivoPrivado.write(clavePrivadaTexto);
             archivoPrivado.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        long tiempoGeneracionClavePrivada = tiempoClavePrivada.getTiempo();
+
+        Tiempo tiempoClavePublica = new Tiempo();
+        PublicKey clavePublica = parLlaves.getPublic();
+        String clavePublicaTexto = Base64.getEncoder().encodeToString(clavePublica.getEncoded());
         try {
-            FileWriter archivoPublico = new FileWriter("../llaves/llave_pub.txt");
+            FileWriter archivoPublico = new FileWriter("C:\\Users\\dluci\\OneDrive\\Documentos\\GitHub\\Caso3Infracom\\llaves\\llave_pub.txt");
             archivoPublico.write(clavePublicaTexto);
             archivoPublico.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        long tiempoGeneracionClavePublica = tiempoClavePublica.getTiempo();
+
+        System.out.println("El tiempo de extracción de la clave pública fue: " + tiempoGeneracionClavePublica + " ms");
+        System.out.println("El tiempo de extracción de la clave privada fue: " + tiempoGeneracionClavePrivada + " ms");
     }
 }
